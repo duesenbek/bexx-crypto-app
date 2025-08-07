@@ -258,4 +258,5 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
  #   d u e s e n b e k - c r y p t o - a p p  
  #   d u e s e n b e k - c r y p t o - a p p  
  #   b e x x - c r y p t o - a p p  
+ #   b e x x - c r y p t o - a p p  
  
