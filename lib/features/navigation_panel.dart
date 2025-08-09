@@ -3,7 +3,7 @@ import 'package:flutter_study_guide/features/crypto_list/view/crypto_list_screen
 
 
  class NavigationPanel extends StatelessWidget {
-  NavigationPanel({Key? key}) : super(key: key);
+  NavigationPanel({super.key});
      int _currentIndex = 0;
      final List<Widget> _children = [
         CryptoListScreen(),

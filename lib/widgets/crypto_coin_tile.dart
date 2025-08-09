@@ -9,14 +9,14 @@ class CryptoCoinTile extends StatelessWidget {
   final String coinFullName;
   
   const CryptoCoinTile({
-    Key? key,
+    super.key,
     required this.coinName,
     required this.coinPrice,
     required this.cryptoIcon,
     required this.coinSymbol,
     required this.coinFullName,
     
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

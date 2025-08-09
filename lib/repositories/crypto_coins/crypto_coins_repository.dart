@@ -86,6 +86,7 @@ class CryptoCoinsRepository implements AbstractCoinsRepository {
   }
 
   // Optionally keep this if you use it elsewhere, otherwise remove
+  @override
   Future<List<CryptoCoin>> getCoinsList() async {
     return getCoins();
   }
