@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_study_guide/widgets/widgets.dart';
 import 'package:flutter_study_guide/features/crypto_list/view/bloc/crypto_list_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 class CryptoListScreen extends StatefulWidget {
   const CryptoListScreen({super.key});
@@ -36,6 +37,15 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
             fontWeight: FontWeight.w800,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.document_scanner_outlined),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => TalkerScreen(talker:GetIt.I<Talker>())
+              ));
+            },
+          ),
+        ],
         iconTheme: const IconThemeData(color: Colors.black),
         elevation: 0,
         backgroundColor: const Color(0xFF0C4C80),
