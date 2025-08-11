@@ -8,15 +8,22 @@ import 'package:flutter_study_guide/features/crypto_coin_screen/bloc/crypto_coin
 import 'package:talker_flutter/talker_flutter.dart';
 import 'dart:async';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
-// Ensure that the file 'abstract_coins_repository.dart' exists and defines 'AbstractCoinsRepository'
+import 'package:firebase_core/firebase_core.dart';
 import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'firebase_options.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
   final talker = TalkerFlutter.init();
   GetIt.I.registerSingleton(talker);
   GetIt.I<Talker>().debug('App started with TalkerFlutter');
   GetIt.I<Talker>().info('Initializing dependencies');
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   final dio = Dio();
   dio.interceptors.add(TalkerDioLogger(talker: talker,settings: TalkerDioLoggerSettings(
     printResponseData: false, 
