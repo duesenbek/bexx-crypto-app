@@ -24,10 +24,12 @@ dependencies:
   talker_dio_logger: ^4.9.3
   talker_bloc_logger: ^4.9.3
   firebase_core: ^4.0.0
+  json_annotation: ^4.9.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  
+  json_serializable: ^6.10.0
+  build_runner: ^2.6.0
 
   flutter_lints: ^5.0.0
 

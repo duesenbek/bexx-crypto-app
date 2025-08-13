@@ -3,6 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_study_guide/repositories/crypto_coins/abstract_coins_repository.dart';
 import 'package:flutter_study_guide/repositories/models/crypto_coin_model.dart';
+
 class CryptoCoinsRepository implements AbstractCoinsRepository {
   CryptoCoinsRepository({
     required Dio dio,
@@ -10,7 +11,6 @@ class CryptoCoinsRepository implements AbstractCoinsRepository {
 
   final Dio _dio;
 
-  @override
   Future<List<CryptoCoin>> getCoins() async {
     final response = await _dio.get('https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,ETH,BNB,LTC,XRP,SOL,RESOLV,S&tsyms=USD');
     final data = response.data as Map<String, dynamic>;
@@ -20,15 +20,15 @@ class CryptoCoinsRepository implements AbstractCoinsRepository {
       final priceInUSD = usdData['PRICE']?.toString() ?? '0';
       final coinSymbol = usdData['FROMSYMBOL']?.toString() ?? 'Undefined';
       final cryptoIcon = usdData['IMAGEURL'] != null
-          ? 'https://www.cryptocompare.com' + usdData['IMAGEURL']
+          ? 'https://www.cryptocompare.com${usdData['IMAGEURL']}'
           : null;
       final coinName = usdData['FROMSYMBOL']?.toString() ?? 'Undefined';
       final coinFullName = usdData['FULLNAME']?.toString() ?? 'Undefined';
       return CryptoCoin(
+        name: coinName,
         priceInUSD: priceInUSD,
         coinSymbol: coinSymbol,
         cryptoIcon: cryptoIcon,
-        name: coinName,
         coinFullName: coinFullName,
       );
     }).toList();
@@ -50,7 +50,7 @@ class CryptoCoinsRepository implements AbstractCoinsRepository {
     final priceInUSD = usdData['PRICE']?.toString() ?? '0';
     final coinSymbol = usdData['FROMSYMBOL']?.toString() ?? 'Undefined';
     final cryptoIcon = usdData['IMAGEURL'] != null
-        ? 'https://www.cryptocompare.com' + usdData['IMAGEURL']
+        ? 'https://www.cryptocompare.com${usdData['IMAGEURL']}'
         : null;
     final coinName = usdData['FROMSYMBOL']?.toString() ?? 'Undefined';
     final coinFullName = usdData['FULLNAME']?.toString() ?? 'Undefined';
@@ -65,27 +65,23 @@ class CryptoCoinsRepository implements AbstractCoinsRepository {
     final change30d = usdData['CHANGEPCT30DAYS']?.toString() ?? '0';
    
     return CryptoCoin(
+      name: coinName,
       priceInUSD: priceInUSD,
       coinSymbol: coinSymbol,
       cryptoIcon: cryptoIcon,
-      name: coinName,
       coinFullName: coinFullName,
       low: low,
       high: high,     
       marketCap: marketCap,
       volume24h: volume24h,
-
       change30min: change30min,
       change1h: change1h, 
-
       change24h: change24h,
       change7d: change7d,
       change30d: change30d,
-      
     );
   }
 
-  // Optionally keep this if you use it elsewhere, otherwise remove
   @override
   Future<List<CryptoCoin>> getCoinsList() async {
     return getCoins();

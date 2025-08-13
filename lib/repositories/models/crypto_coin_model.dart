@@ -3,8 +3,8 @@ import 'package:equatable/equatable.dart';
 class CryptoCoin extends Equatable {
   final String name;
   final String priceInUSD;
-  final String? cryptoIcon;
   final String? coinSymbol;
+  final String? cryptoIcon;
   final String? coinFullName;
   final String? low;
   final String? high;
@@ -19,8 +19,8 @@ class CryptoCoin extends Equatable {
   const CryptoCoin({
     required this.name,
     required this.priceInUSD,
-    this.cryptoIcon,
     this.coinSymbol,
+    this.cryptoIcon,
     this.coinFullName,
     this.low,
     this.high,
@@ -37,8 +37,8 @@ class CryptoCoin extends Equatable {
   List<Object?> get props => [
         name,
         priceInUSD,
-        cryptoIcon,
         coinSymbol,
+        cryptoIcon,
         coinFullName,
         low,
         high,

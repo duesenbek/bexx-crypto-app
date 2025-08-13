@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-class UserProfileScreen {
-  // Placeholder for UserProfileScreen implementation
-  // This should be replaced with the actual implementation of the user profile screen
+
+class UserProfileScreen extends StatelessWidget {
+  const UserProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Profile'),
+        title: const Text('User Profile'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('User Profile Screen'),
       ),
     );

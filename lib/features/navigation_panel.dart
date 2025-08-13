@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study_guide/features/crypto_list/view/crypto_list_screen.dart';
+import 'package:flutter_study_guide/features/crypto_list/view/trading_screen.dart';
+import 'package:flutter_study_guide/features/crypto_list/view/userprofile_screen.dart';
 
+class NavigationPanel extends StatefulWidget {
+  const NavigationPanel({super.key});
 
- class NavigationPanel extends StatelessWidget {
-  NavigationPanel({super.key});
-     int _currentIndex = 0;
-     final List<Widget> _children = [
-        CryptoListScreen(),
-        Placeholder(), // Replace with your actual screens or import UserProfileScreen if it exists
-        Placeholder(), // Replace with your actual screens or import CryptoTradingScreen if it exists
-     ];
+  @override
+  State<NavigationPanel> createState() => _NavigationPanelState();
+}
+
+class _NavigationPanelState extends State<NavigationPanel> {
+  int _currentIndex = 0;
+  
+  final List<Widget> _children = [
+    const CryptoListScreen(),
+    const CryptoTradingScreen(),
+    const UserProfileScreen(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,8 +26,9 @@ import 'package:flutter_study_guide/features/crypto_list/view/crypto_list_screen
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
-          _currentIndex = index;
-          (context as Element).markNeedsBuild();
+          setState(() {
+            _currentIndex = index;
+          });
         },
         items: const [
           BottomNavigationBarItem(
@@ -33,9 +43,6 @@ import 'package:flutter_study_guide/features/crypto_list/view/crypto_list_screen
             icon: Icon(Icons.person),
             label: 'User Profile',
           ),
-          
-
-          // Add more navigation items here as needed
         ],
       ),
     );
