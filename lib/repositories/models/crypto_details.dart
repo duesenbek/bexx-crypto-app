@@ -27,4 +27,14 @@ class CryptoDetails extends Equatable {
       _$CryptoDetailsFromJson(json);
 
   Map<String, dynamic> toJson() => _$CryptoDetailsToJson(this);
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        symbol,
+        price,
+        marketCap,
+        volume24h,
+        change24h,
+      ];
 }
