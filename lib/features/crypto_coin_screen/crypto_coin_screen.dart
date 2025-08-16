@@ -1,7 +1,12 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_study_guide/features/crypto_coin_screen/bloc/crypto_coin_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+
+@JsonSerializable() 
 class CryptoCoinScreen extends StatefulWidget {
   final CryptoCoinBloc cryptoCoinBloc;
   
