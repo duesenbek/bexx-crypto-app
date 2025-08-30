@@ -41,7 +41,9 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
           IconButton(
             icon: const Icon(Icons.document_scanner_outlined),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => TalkerScreen(talker:GetIt.I<Talker>())
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    TalkerScreen(talker: GetIt.I<Talker>()),
               ));
             },
           ),
@@ -62,56 +64,61 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
           builder: (context, state) {
             if (state is CryptoListLoading) {
               return const Center(child: CircularProgressIndicator());
-          } else if (state is CryptoListLoaded) {
-            final coins = state.cryptoCoinsList;
+            } else if (state is CryptoListLoaded) {
+              final coins = state.cryptoCoinsList;
 
-            if (coins.isEmpty) {
-              return const Center(child: Text("No crypto coins found"));
+              if (coins.isEmpty) {
+                return const Center(child: Text("No crypto coins found"));
+              }
+
+              return ListView.separated(
+                padding: const EdgeInsets.only(top: 8),
+                itemCount: coins.length,
+                separatorBuilder: (context, index) => const Divider(
+                  color: Colors.grey,
+                  height: 2.0,
+                ),
+                itemBuilder: (context, index) {
+                  final coin = coins[index];
+                  return CryptoCoinTile(
+                    coinName: coin.name,
+                    coinFullName: coin.details.cryptoFullName ?? coin.name,
+                    coinPrice:
+                        "\$${coin.details.priceInUSD.toStringAsFixed(2)}",
+                    cryptoIcon: coin.details.cryptoIcon ?? '',
+                    coinSymbol: coin.details.symbol,
+                  );
+                },
+              );
+            } else if (state is CryptoListError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.error, size: 50, color: Colors.red),
+                    const SizedBox(height: 10),
+                    Text(
+                      state.message,
+                      style:
+                          const TextStyle(fontSize: 18, color: Colors.red),
+                    ),
+                    TextButton(
+                      onPressed: () =>
+                          _cryptoListBloc.add(LoadCryptoList()),
+                      child: const Text(
+                        'Retry',
+                        style: TextStyle(fontSize: 16, color: Colors.blue),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             }
 
-            return ListView.separated(
-              padding: const EdgeInsets.only(top: 8),
-              itemCount: coins.length,
-              separatorBuilder: (context, index) => const Divider(
-                color: Colors.grey,
-                height: 2.0,
-              ),
-              itemBuilder: (context, index) {
-                final coin = coins[index];
-                return CryptoCoinTile(
-                  coinName: coin.name,
-                  coinFullName: coin.name,
-                  coinPrice: coin.priceInUSD,
-                  cryptoIcon: coin.cryptoIcon ?? '',
-                  coinSymbol: coin.coinSymbol ?? '',
-                );
-              },
-            );
-          } else if (state is CryptoListError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error, size: 50, color: Colors.red),
-                  const SizedBox(height: 10),
-                  Text(
-                    state.message,
-                    style: const TextStyle(fontSize: 18, color: Colors.red),
-                  ),
-                  TextButton(
-                    onPressed: () => _cryptoListBloc.add(LoadCryptoList()),
-                    child: const Text('Retry',
-                        style: TextStyle(fontSize: 16, color: Colors.blue)),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          return const Center(child: Text("Unknown state"));
-        },
+            return const Center(child: Text("Unknown state"));
+          },
+        ),
       ),
-    ),
     );
   }
 }

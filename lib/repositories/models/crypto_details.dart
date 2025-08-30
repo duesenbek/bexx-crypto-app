@@ -5,19 +5,32 @@ part 'crypto_details.g.dart';
 
 @JsonSerializable()
 class CryptoDetails extends Equatable {
-  final String id;
-  final String name;
+  @JsonKey(name: 'FROMSYMBOL')
   final String symbol;
-  final double price;
+
+  @JsonKey(name: 'FULLNAME')
+  final String? cryptoFullName;
+
+  @JsonKey(name: 'IMAGEURL')
+  final String? cryptoIcon;
+
+  @JsonKey(name: 'PRICE')
+  final double priceInUSD;
+
+  @JsonKey(name: 'MKTCAP')
   final double marketCap;
+
+  @JsonKey(name: 'VOLUME24HOUR')
   final double volume24h;
+
+  @JsonKey(name: 'CHANGEPCT24HOUR')
   final double change24h;
 
   const CryptoDetails({
-    required this.id,
-    required this.name,
     required this.symbol,
-    required this.price,
+    this.cryptoFullName,
+    this.cryptoIcon,
+    required this.priceInUSD,
     required this.marketCap,
     required this.volume24h,
     required this.change24h,
@@ -27,12 +40,13 @@ class CryptoDetails extends Equatable {
       _$CryptoDetailsFromJson(json);
 
   Map<String, dynamic> toJson() => _$CryptoDetailsToJson(this);
+
   @override
   List<Object?> get props => [
-        id,
-        name,
         symbol,
-        price,
+        cryptoFullName,
+        cryptoIcon,
+        priceInUSD,
         marketCap,
         volume24h,
         change24h,

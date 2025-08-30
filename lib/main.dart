@@ -12,46 +12,53 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase_options.dart';
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
 
-  final talker = TalkerFlutter.init();
-  GetIt.I.registerSingleton(talker);
-  GetIt.I<Talker>().debug('App started with TalkerFlutter');
-  GetIt.I<Talker>().info('Initializing dependencies');
+void main() {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+    final talker = TalkerFlutter.init();
+    GetIt.I.registerSingleton(talker);
 
-  final dio = Dio();
-  dio.interceptors.add(TalkerDioLogger(talker: talker,settings: TalkerDioLoggerSettings(
-    printResponseData: false, 
-  )));
-  Bloc.observer = TalkerBlocObserver(
-    talker: talker,
-    settings: TalkerBlocLoggerSettings(
-       printStateFullData: false,
-       printEventFullData: false,
-      
-    )
-  );
-  GetIt.I.registerSingleton<AbstractCoinsRepository>(
-    CryptoCoinsRepository(dio: dio),
-  ); 
-  FlutterError.onError = (details) {
-    GetIt.I<Talker>().handle(details.exception, details.stack);
-  };
-  runZonedGuarded(
-    () => runApp(CryptoCurrencyApp(cryptoCoinBloc: CryptoCoinBloc(
-      repository: GetIt.I<AbstractCoinsRepository>(),
-    ))),
-    (error, stackTrace) {
-      GetIt.I<Talker>().handle(error, stackTrace);
-    },
-  );
+    GetIt.I<Talker>().debug('App started with TalkerFlutter');
+    GetIt.I<Talker>().info('Initializing dependencies');
 
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    final dio = Dio();
+    dio.interceptors.add(
+      TalkerDioLogger(
+        talker: talker,
+        settings: TalkerDioLoggerSettings(printResponseData: false),
+      ),
+    );
+
+    Bloc.observer = TalkerBlocObserver(
+      talker: talker,
+      settings: TalkerBlocLoggerSettings(
+        printStateFullData: false,
+        printEventFullData: false,
+      ),
+    );
+
+    GetIt.I.registerSingleton<AbstractCoinsRepository>(
+      CryptoCoinsRepository(dio: dio),
+    );
+
+    FlutterError.onError = (details) {
+      GetIt.I<Talker>().handle(details.exception, details.stack);
+    };
+
+    runApp(
+      CryptoCurrencyApp(
+        cryptoCoinBloc: CryptoCoinBloc(
+          repository: GetIt.I<AbstractCoinsRepository>(),
+        ),
+      ),
+    );
+  }, (error, stackTrace) {
+    GetIt.I<Talker>().handle(error, stackTrace);
+  });
 }
-
-
-  

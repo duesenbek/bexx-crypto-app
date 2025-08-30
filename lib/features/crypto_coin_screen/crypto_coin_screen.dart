@@ -1,15 +1,11 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:flutter_study_guide/features/crypto_coin_screen/bloc/crypto_coin_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter_study_guide/features/crypto_coin_screen/bloc/crypto_coin_bloc.dart';
 
 
-@JsonSerializable() 
 class CryptoCoinScreen extends StatefulWidget {
   final CryptoCoinBloc cryptoCoinBloc;
-  
+
   const CryptoCoinScreen({
     super.key,
     required this.cryptoCoinBloc,
@@ -31,7 +27,7 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
       final args = ModalRoute.of(context)?.settings.arguments as Map<String, String>?;
       coinName = args?['coinName'] ?? 'Unknown Coin';
       coinIcon = args?['coinIcon'] ?? '';
-      
+
       if (coinName != null && coinName!.isNotEmpty && coinName != 'Unknown Coin') {
         widget.cryptoCoinBloc.add(LoadCryptoCoin(coinName!));
         _hasLoaded = true;
@@ -71,16 +67,20 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
         bloc: widget.cryptoCoinBloc,
         builder: (context, state) {
           if (state is CryptoCoinLoaded) {
-            final coin = state.coin;
+            final details = state.coin.details;
+
             return Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  if (coin.cryptoIcon != null)
+                  if (details.cryptoIcon != null)
                     SizedBox(
                       height: 160,
                       width: 160,
-                      child: Image.network(coin.cryptoIcon!),
+                      child: Image.network(
+                        'https://www.cryptocompare.com${details.cryptoIcon!}',
+                        fit: BoxFit.contain,
+                      ),
                     )
                   else
                     const SizedBox(
@@ -94,7 +94,7 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
                     ),
                   const SizedBox(height: 24),
                   Text(
-                    coin.coinFullName ?? coinName ?? 'Unknown',
+                    details.cryptoFullName ?? details.symbol,
                     style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w700,
@@ -104,7 +104,7 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
                   BaseCard(
                     child: Center(
                       child: Text(
-                        '\$${coin.priceInUSD}',
+                        '\$${details.priceInUSD.toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.w700,
@@ -112,29 +112,27 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
                       ),
                     ),
                   ),
-                  if (coin.high != null && coin.low != null)
-                    BaseCard(
-                      child: Column(
-                        children: [
-                          _DataRow(
-                            title: 'High 24 Hour',
-                            value: '\$${coin.high}',
-                          ),
-                          const SizedBox(height: 6),
-                          _DataRow(
-                            title: 'Low 24 Hour',
-                            value: '\$${coin.low}',
-                          ),
-                        ],
-                      ),
+                  BaseCard(
+                    child: Column(
+                      children: [
+                        _DataRow(
+                          title: 'Market Cap',
+                          value: '\$${details.marketCap.toStringAsFixed(2)}',
+                        ),
+                        const SizedBox(height: 6),
+                        _DataRow(
+                          title: 'Volume 24h',
+                          value: '\$${details.volume24h.toStringAsFixed(2)}',
+                        ),
+                      ],
                     ),
-                  if (coin.change24h != null)
-                    BaseCard(
-                      child: _DataRow(
-                        title: '24h Change',
-                        value: '${coin.change24h}%',
-                      ),
+                  ),
+                  BaseCard(
+                    child: _DataRow(
+                      title: '24h Change',
+                      value: '${details.change24h.toStringAsFixed(2)}%',
                     ),
+                  ),
                 ],
               ),
             );
