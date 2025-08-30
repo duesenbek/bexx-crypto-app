@@ -13,7 +13,7 @@ class CryptoDetails extends Equatable {
   final double volume24h;
   final double change24h;
 
-  CryptoDetails({
+  const CryptoDetails({
     required this.id,
     required this.name,
     required this.symbol,
