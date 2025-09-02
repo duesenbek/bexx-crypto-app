@@ -15,11 +15,15 @@ CryptoDetails _$CryptoDetailsFromJson(Map<String, dynamic> json) =>
       marketCap: (json['MKTCAP'] as num).toDouble(),
       volume24h: (json['VOLUME24HOUR'] as num).toDouble(),
       change24h: (json['CHANGEPCT24HOUR'] as num).toDouble(),
+      lastUpdate: CryptoDetails._dateTimeFromJson(
+        (json['LASTUPDATE'] as num).toInt(),
+      ),
     );
 
 Map<String, dynamic> _$CryptoDetailsToJson(CryptoDetails instance) =>
     <String, dynamic>{
       'FROMSYMBOL': instance.symbol,
+      'LASTUPDATE': CryptoDetails._dateTimeToJson(instance.lastUpdate),
       'FULLNAME': instance.cryptoFullName,
       'IMAGEURL': instance.cryptoIcon,
       'PRICE': instance.priceInUSD,

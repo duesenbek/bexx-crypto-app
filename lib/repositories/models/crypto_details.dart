@@ -8,6 +8,9 @@ class CryptoDetails extends Equatable {
   @JsonKey(name: 'FROMSYMBOL')
   final String symbol;
 
+  @JsonKey(name: 'LASTUPDATE', fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
+  final DateTime lastUpdate;
+
   @JsonKey(name: 'FULLNAME')
   final String? cryptoFullName;
 
@@ -34,6 +37,7 @@ class CryptoDetails extends Equatable {
     required this.marketCap,
     required this.volume24h,
     required this.change24h,
+    required this.lastUpdate,
   });
 
   factory CryptoDetails.fromJson(Map<String, dynamic> json) =>
@@ -41,6 +45,12 @@ class CryptoDetails extends Equatable {
 
   Map<String, dynamic> toJson() => _$CryptoDetailsToJson(this);
 
+  static DateTime _dateTimeFromJson(int timestamp) =>
+      DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+
+  
+  static int _dateTimeToJson(DateTime time) =>
+      (time.millisecondsSinceEpoch / 1000).round();
   @override
   List<Object?> get props => [
         symbol,
@@ -49,6 +59,7 @@ class CryptoDetails extends Equatable {
         priceInUSD,
         marketCap,
         volume24h,
+        lastUpdate,
         change24h,
       ];
 }
