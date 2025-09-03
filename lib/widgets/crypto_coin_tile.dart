@@ -18,7 +18,6 @@ class CryptoCoinTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Добавляем базовый URL, если иконка начинается с "/"
     final iconUrl = cryptoIcon.isNotEmpty
         ? (cryptoIcon.startsWith('/')
             ? "https://www.cryptocompare.com$cryptoIcon"

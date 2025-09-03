@@ -12,6 +12,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase_options.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 void main() {
   runZonedGuarded(() async {
@@ -23,10 +24,12 @@ void main() {
     GetIt.I<Talker>().debug('App started with TalkerFlutter');
     GetIt.I<Talker>().info('Initializing dependencies');
 
+    
+
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-
+    
     final dio = Dio();
     dio.interceptors.add(
       TalkerDioLogger(
@@ -50,7 +53,7 @@ void main() {
     FlutterError.onError = (details) {
       GetIt.I<Talker>().handle(details.exception, details.stack);
     };
-
+    await Hive.initFlutter();
     runApp(
       CryptoCurrencyApp(
         cryptoCoinBloc: CryptoCoinBloc(
